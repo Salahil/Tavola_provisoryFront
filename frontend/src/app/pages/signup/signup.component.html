@@ -1,0 +1,90 @@
+<app-default-login-layout
+    title="Cadastre-se"
+    primaryBtnText="Cadastrar"
+    secondaryBtnText="Já possui uma conta? Entre na plataforma"
+    (submit)="submit()"
+    (navigate)="navigate()"
+    [disablePrimaryBtn]="!signupForm.valid"
+>
+    <form [formGroup]="signupForm" class="signup-form">
+        <!-- Campo Nome -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome Completo</mat-label>
+            <span matPrefix>
+                <mat-icon class="input-icon">person</mat-icon>
+            </span>
+            <input matInput placeholder="Seu nome completo" formControlName="name" type="text">
+            <mat-error *ngIf="signupForm.get('name')?.hasError('required')">
+                Este campo é obrigatório
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('name')?.hasError('minlength')">
+                O nome deve ter no mínimo 3 caracteres
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('name')?.hasError('maxlength')">
+                O nome deve ter no máximo 50 caracteres
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('name')?.hasError('onlyLetters')">
+                O nome deve conter apenas letras e espaços
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo E-mail -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-mail</mat-label>
+            <span matPrefix>
+                <mat-icon class="input-icon">email</mat-icon>
+            </span>
+            <input matInput placeholder="Seu e-mail" formControlName="email" type="email">
+            
+            <!-- Priorizar o erro do TLD antes do erro padrão -->
+            <mat-error *ngIf="signupForm.get('email')?.hasError('emailTLD')">
+                Insira um email válido com um domínio (ex: .com, com.br)
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('email')?.hasError('email') && !signupForm.get('email')?.hasError('emailTLD')">
+                Email inválido
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('email')?.hasError('required') && !signupForm.get('email')?.hasError('emailTLD') && !signupForm.get('email')?.hasError('email')">
+                Este campo é obrigatório
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Senha -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Senha</mat-label>
+            <span matPrefix>
+                <mat-icon class="input-icon">lock</mat-icon>
+            </span>
+            <input matInput placeholder="Deve ter no mínimo 6 caracteres" formControlName="password" type="password">
+            <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+                Este campo é obrigatório
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
+                A senha deve ter no mínimo 6 caracteres
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('password')?.hasError('maxlength')">
+                A senha deve ter no máximo 20 caracteres
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Confirmação de Senha -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirme sua senha</mat-label>
+            <span matPrefix>
+                <mat-icon class="input-icon">lock</mat-icon>
+            </span>
+            <input matInput placeholder="Deve ter no mínimo 6 caracteres" formControlName="passwordConfirm" type="password">
+            <mat-error *ngIf="signupForm.get('passwordConfirm')?.hasError('required')">
+                Este campo é obrigatório
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('passwordConfirm')?.hasError('minlength')">
+                A confirmação de senha deve ter no mínimo 6 caracteres
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('passwordConfirm')?.hasError('maxlength')">
+                A confirmação de senha deve ter no máximo 20 caracteres
+            </mat-error>
+            <mat-error *ngIf="signupForm.get('passwordConfirm')?.hasError('passwordMismatch') && signupForm.get('passwordConfirm')?.touched">
+                As senhas não coincidem
+            </mat-error>
+        </mat-form-field>
+    </form>
+</app-default-login-layout>
